@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -9,9 +10,15 @@ export class UsersController {
 
   @Get()
   getUsers() {
-    console.log('Fetching users...Controller:::');
-
     return this.usersService.getUsers();
+  }
+
+  @Get('getUserProfile')
+  @UseGuards(FirebaseAuthGuard)
+  getUserProfile(@Req() req) {
+    // console.log('getUserProfile...Controller::req:::', req);
+
+    return this.usersService.getUserProfile(req.user.uid);
   }
   
   @Post()

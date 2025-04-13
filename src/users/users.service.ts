@@ -16,6 +16,11 @@ export class UsersService {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
 
+  async getUserProfile(uid: string): Promise<any | null> {
+    const userDoc = await this.db.collection('users').doc(uid).get();
+    return userDoc.exists ? userDoc.data() : null;
+  }
+
   async createUser(data: any): Promise<string> {
     const docRef = await this.db.collection('users').add(data);
     return docRef.id;
