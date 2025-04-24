@@ -10,6 +10,6 @@ export class AppService {
   }
   getHello(): string {
     console.log
-    return 'Hello World!';
+    return 'Ola World!';
   }
 }
